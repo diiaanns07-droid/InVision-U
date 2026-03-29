@@ -1,0 +1,21 @@
+# Core ML Stack
+torch
+torchvision
+torchaudio
+unsloth @ git+https://github.com/unslothai/unsloth.git
+
+# Hugging Face & Fine-tuning
+transformers
+trl
+peft
+accelerate
+bitsandbytes
+
+# Data Handling
+pandas
+datasets
+tqdm
+
+# Utilities
+numpy
+scipy
