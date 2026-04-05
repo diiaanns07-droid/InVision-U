@@ -47,3 +47,12 @@ node_modules
 .env
 *.log
 *.tsbuildinfo
+
+node_modules
+.next
+.env
+.env.local
+.venv
+__pycache__
+datasets
+models
