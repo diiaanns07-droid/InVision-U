@@ -1,0 +1,7 @@
+﻿metric,mae,rmse,pearson,spearman
+leadership,0.72,1.0,0.6321,0.627
+initiative,0.44,0.6928,0.8529,0.8489
+growth,0.46,0.7348,0.856,0.8311
+motivation,0.62,0.8367,0.813,0.8274
+values,0.4,0.6633,0.8456,0.8538
+OVERALL,0.528,0.795,0.8275,0.8133

@@ -1,0 +1,12 @@
+Validation summary
+==================
+Rows evaluated: 50
+Dataset: C:\Users\LEGION\Desktop\InVision U\datasets\combined_dataset.csv
+Adapter: C:\Users\LEGION\Desktop\InVision U\essay-eval-lora
+
+leadership: MAE=0.72, RMSE=1.0, Pearson=0.6321, Spearman=0.627
+initiative: MAE=0.44, RMSE=0.6928, Pearson=0.8529, Spearman=0.8489
+growth: MAE=0.46, RMSE=0.7348, Pearson=0.856, Spearman=0.8311
+motivation: MAE=0.62, RMSE=0.8367, Pearson=0.813, Spearman=0.8274
+values: MAE=0.4, RMSE=0.6633, Pearson=0.8456, Spearman=0.8538
+OVERALL: MAE=0.528, RMSE=0.795, Pearson=0.8275, Spearman=0.8133
