@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(APPLICANT)
+  createdAt    DateTime @default(now())
+
+  profile      Profile?
+  applications Application[]
+}
+
+model Profile {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  fullName  String?
+  birthDate DateTime?
+  age       Int?
+  country   String?
+  city      String?
+  telegram  String?
+  phone     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Application {
+  id           String            @id @default(cuid())
+  userId       String
+  status       ApplicationStatus @default(DRAFT)
+  createdAt    DateTime          @default(now())
+  submittedAt  DateTime?
+
+  viewCount    Int               @default(0)
+  lastViewedAt DateTime?
+
+  adminScore   Float?
+  reviewedAt   DateTime?
+  reviewComment String?
+
+  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  essaySubmission EssaySubmission?
+  videoSubmission VideoSubmission?
+  certificates    Certificate[]
+  scores          ModelScore[]
+  answers         QuestionnaireAnswer[]
+}
+
+model EssaySubmission {
+  id               String   @id @default(cuid())
+  applicationId    String   @unique
+  essayText        String
+  fileKey          String?
+  aiSuspicionScore Float?
+  justification    String?
+  createdAt        DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model QuestionnaireAnswer {
+  id            String   @id @default(cuid())
+  applicationId String
+  questionKey   String
+  questionText  String
+  answerText    String
+  orderIndex    Int
+  createdAt     DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId, orderIndex])
+}
+
+model VideoSubmission {
+  id             String   @id @default(cuid())
+  applicationId  String   @unique
+  fileKey        String?
+  videoUrl       String?
+  transcriptText String?
+  durationSec    Int?
+  createdAt      DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+model Certificate {
+  id             String             @id @default(cuid())
+  applicationId  String
+  certType       CertificateType
+  scoreText      String?
+  issuingOrg     String?
+  issueDate      DateTime?
+  expiryDate     DateTime?
+  fileKey        String
+  verifiedStatus VerificationStatus @default(PENDING)
+  createdAt      DateTime           @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId, certType])
+}
+
+model ModelScore {
+  id            String          @id @default(cuid())
+  applicationId String
+  sourceType    ModelSourceType
+
+  leadership Float?
+  initiative Float?
+  growth     Float?
+  motivation Float?
+  values     Float?
+
+  leaderPotential    Float?
+  deepHumanPotential Float?
+
+  confidence         Float?
+  videoCommunication Float?
+  videoPresence      Float?
+  videoAuthenticity  Float?
+  explanation        Json?
+  createdAt          DateTime @default(now())
+
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@unique([applicationId, sourceType])
+}
+
+enum UserRole {
+  APPLICANT
+  ADMIN
+  REVIEWER
+}
+
+enum ApplicationStatus {
+  DRAFT
+  IN_REVIEW
+  SCORED
+  ACCEPTED
+  REJECTED
+  FINALIZED
+}
+
+enum ModelSourceType {
+  ESSAY
+  INTERVIEW
+  VIDEO
+}
+
+enum CertificateType {
+  ENT
+  IELTS
+  SAT
+  EXTRA
+  OTHER
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
